@@ -65,6 +65,9 @@ var getUnanswered = function(tags) {
 		type: "GET",
 	})
 	.done(function(result){ //this waits for the ajax to return with a succesful promise object
+		
+		console.log(request.tagged)
+		
 		var searchResults = showSearchResults(request.tagged, result.items.length);
 
 		$('.search-results').html(searchResults);
@@ -82,6 +85,78 @@ var getUnanswered = function(tags) {
 };
 
 
+
+
+
+////////////////////////////////
+
+
+var showTopAnswerer = function(obj){
+	
+	var result = $('.templates .answerers').clone();
+
+	var userName = result.find('.user');
+	userName.text(obj.user.display_name);
+	
+	var userScore = result.find('.score');
+	userScore.text(obj.score);
+	
+	var profilePic = result.find('.profile-pic')
+	profilePic.html('<img src="' + obj.user.profile_image + '" >')
+	
+	return result;
+
+}
+
+
+
+
+
+var getTopAnswerer = function(tag){
+	console.log(tag)
+
+	var request = {
+		site: 'stackoverflow'
+	};
+	
+	var url = 'http://api.stackexchange.com/2.2/tags/' + tag + '/top-answerers/all_time';
+	console.log(url);
+		
+	$.ajax({
+		url: url,
+		data: request,
+		dataType: 'jsonp',
+		type: 'GET'
+	})
+	.done(function(result){
+		
+		console.log(result)
+		
+		////// putting search Result Info on Page /////
+		var searchResults = showSearchResults(tag, result.items.length)
+		$('.search-results').html(searchResults);
+		
+		
+		////
+		
+		var list = result.items
+		console.log(list)
+		
+		for(var i = 0; i < list.length; i++){
+			var info = showTopAnswerer(list[i]);
+
+			$('.results').append(info);
+		}
+			
+	});
+
+}
+
+
+
+//////////////////////////////////////
+
+
 $(document).ready( function() {
 	$('.unanswered-getter').submit( function(e){
 		e.preventDefault();
@@ -91,4 +166,16 @@ $(document).ready( function() {
 		var tags = $(this).find("input[name='tags']").val();
 		getUnanswered(tags);
 	});
+
+	
+	$('.inspiration-getter').submit( function(e) {
+		e.preventDefault();
+		
+		$('.results').html('');
+		
+		var answererTags = $(this).find("input[name='answerers']").val();
+
+		getTopAnswerer(answererTags);
+
+	})
 });

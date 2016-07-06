@@ -45,3 +45,25 @@
 	background-color: #F78181;
 	padding: 1em;
 }
+
+.answerers {
+	border: 1px black solid;
+	margin: 1em;
+	padding: 1em;
+	font-weight: bold;
+}
+
+.user {
+	margin: 1em;
+	font-weight: normal;
+}
+
+.score {
+	margin: 1em;
+	font-weight: normal;
+
+}
+
+.profile-pic {
+
+}
