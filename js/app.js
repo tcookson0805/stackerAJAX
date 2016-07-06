@@ -172,7 +172,6 @@ $(document).ready( function() {
 		e.preventDefault();
 		
 		$('.results').html('');
-		
 		var answererTags = $(this).find("input[name='answerers']").val();
 
 		getTopAnswerer(answererTags);
